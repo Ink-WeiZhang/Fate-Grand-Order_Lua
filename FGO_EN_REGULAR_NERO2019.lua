@@ -54,13 +54,13 @@ StorySkip = 0 --[[
 ]]
 
 --AutoSkill
-Enable_Autoskill = 0
+Enable_Autoskill = 1
 Skill_Confirmation = 0
-Skill_Command = "abc,#,def,#,ghi"
+Skill_Command = ""
 
 --AutoSkillList
 Enable_Autoskill_List = 1
--- Arash 3rd Skill + NP, Merlin 1st Skill + 1st Servant NP, Merlin 3rd skill on 3rd Servant + 3rd Servant NP
+-- Arash 3rd Skill + NP, Merlin 1st Skill + 1st Servant NP, Merlin 3rd skill on 3rd Servant + 3rd Servant NPgit 
 Autoskill_List[1][1] = "Test Setup 3T"
 Autoskill_List[1][2] = "c4,#,g4,#,i35"
 
