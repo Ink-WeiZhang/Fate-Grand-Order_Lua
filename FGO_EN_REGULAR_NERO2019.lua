@@ -60,9 +60,9 @@ Skill_Command = ""
 
 --AutoSkillList
 Enable_Autoskill_List = 1
--- Arash 3rd Skill + NP, Merlin 1st Skill + 1st Servant NP, Merlin 3rd skill on 3rd Servant + 3rd Servant NPgit 
+-- Arash 3rd Skill + NP, Merlin 1st Skill + 1st Servant NP, Merlin 3rd skill on 2nd Servant + 2nd Servant NP
 Autoskill_List[1][1] = "Test Setup 3T"
-Autoskill_List[1][2] = "c4,#,g4,#,i35"
+Autoskill_List[1][2] = "c4,#,g4,#,i25"
 
 Autoskill_List[2][1] = "Nerofest Qualifiers"
 Autoskill_List[2][2] = ""
