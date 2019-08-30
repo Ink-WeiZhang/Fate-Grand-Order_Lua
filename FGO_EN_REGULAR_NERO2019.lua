@@ -68,7 +68,8 @@ Autoskill_List[1][2] = "c4,#,g4,#,i25"
 -- Gil 1,2,3rd skill + Merlin 1st Skill + Gil NP
 -- Waver 1,2,3 skills + Suit swap waver for friend waver + Waver 1,2,3 skill, suit buff, Gil NP
 Autoskill_List[2][1] = "Nerofest Qualifiers ArashGilWaverMerlinDudFriendWaver"
-Autoskill_List[2][2] = "c4,#,defa5,#,bghi2x33ghi2c2j5"
+Autoskill_List[2][2] = "fcd4,#,ehi5,#,bag2x32g2hic2j5"
+
 
 Autoskill_List[3][1] = "Settings No.3"
 Autoskill_List[3][2] = ""

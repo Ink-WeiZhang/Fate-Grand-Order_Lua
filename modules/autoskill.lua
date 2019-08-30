@@ -33,7 +33,7 @@ local function CastSkill(location)
 		if Skill_Confirmation == 1 then
 			click(game.BATTLE_SKILL_OK_CLICK)
 		end
-
+		wait(2)
 		WaitForAnimationToFinish()
 	end
 end
