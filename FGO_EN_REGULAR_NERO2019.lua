@@ -21,9 +21,9 @@ end
 --Script Configuration, check instructions here: https://github.com/29988122/Fate-Grand-Order_Lua/wiki/Script-configuration-English
 --***************************************************************************
 --AutoRefill Stamina
-Refill_Enabled = 0
+Refill_Enabled = 1
 Refill_Resource = "All Apples"
-Refill_Repetitions = 0
+Refill_Repetitions = 5
 
 --AutoSupportSelection
 Support_SelectionMode = "preferred"
@@ -64,8 +64,11 @@ Enable_Autoskill_List = 1
 Autoskill_List[1][1] = "Test Setup 3T"
 Autoskill_List[1][2] = "c4,#,g4,#,i25"
 
-Autoskill_List[2][1] = "Nerofest Qualifiers"
-Autoskill_List[2][2] = ""
+-- Arash charge + NP
+-- Gil 1,2,3rd skill + Merlin 1st Skill + Gil NP
+-- Waver 1,2,3 skills + Suit swap waver for friend waver + Waver 1,2,3 skill, suit buff, Gil NP
+Autoskill_List[2][1] = "Nerofest Qualifiers ArashGilWaverMerlinDudFriendWaver"
+Autoskill_List[2][2] = "c4,#,defa5,#,ghi2x33ghi25"
 
 Autoskill_List[3][1] = "Settings No.3"
 Autoskill_List[3][2] = ""
