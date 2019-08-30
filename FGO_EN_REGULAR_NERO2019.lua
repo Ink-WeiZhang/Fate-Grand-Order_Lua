@@ -33,7 +33,7 @@ Support_FallbackTo = "first"
 Support_FriendsOnly = 0
 Support_FriendNames = ""
 Support_PreferredServants = "waver4.png, waver3.png, waver2.png, waver1.png"
-Support_PreferredCEs = "*chaldea_lunchtime.png"
+Support_PreferredCEs = "*cheer_for_master.png, cheer_for_master.png"
 
 --Bond CE Get
 StopAfterBond10 = 0--[[
@@ -68,7 +68,7 @@ Autoskill_List[1][2] = "c4,#,g4,#,i25"
 -- Gil 1,2,3rd skill + Merlin 1st Skill + Gil NP
 -- Waver 1,2,3 skills + Suit swap waver for friend waver + Waver 1,2,3 skill, suit buff, Gil NP
 Autoskill_List[2][1] = "Nerofest Qualifiers ArashGilWaverMerlinDudFriendWaver"
-Autoskill_List[2][2] = "c4,#,defa5,#,ghi2x33ghi25"
+Autoskill_List[2][2] = "c4,#,defa5,#,bghi2x33ghi2c2j5"
 
 Autoskill_List[3][1] = "Settings No.3"
 Autoskill_List[3][2] = ""
