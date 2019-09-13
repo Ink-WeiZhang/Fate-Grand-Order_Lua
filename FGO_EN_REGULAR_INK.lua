@@ -21,19 +21,19 @@ end
 --Script Configuration, check instructions here: https://github.com/29988122/Fate-Grand-Order_Lua/wiki/Script-configuration-English
 --***************************************************************************
 --AutoRefill Stamina
-Refill_Enabled = 1
+Refill_Enabled = 0
 Refill_Resource = "All Apples"
-Refill_Repetitions = 5
+Refill_Repetitions = 0
 
 --AutoSupportSelection
-Support_SelectionMode = "preferred"
+Support_SelectionMode = "first"
 Support_SwipesPerUpdate = 10
 Support_MaxUpdates = 3
-Support_FallbackTo = "first"
+Support_FallbackTo = "manual"
 Support_FriendsOnly = 0
 Support_FriendNames = ""
 Support_PreferredServants = "waver4.png, waver3.png, waver2.png, waver1.png"
-Support_PreferredCEs = "*cheer_for_master.png, cheer_for_master.png"
+Support_PreferredCEs = "*chaldea_lunchtime.png"
 
 --Bond CE Get
 StopAfterBond10 = 0--[[
@@ -54,28 +54,21 @@ StorySkip = 0 --[[
 ]]
 
 --AutoSkill
-Enable_Autoskill = 1
+Enable_Autoskill = 0
 Skill_Confirmation = 0
-Skill_Command = ""
+Skill_Command = "abc,#,def,#,ghi"
 
 --AutoSkillList
-Enable_Autoskill_List = 1
--- Arash 3rd Skill + NP, Merlin 1st Skill + 1st Servant NP, Merlin 3rd skill on 2nd Servant + 2nd Servant NP
-Autoskill_List[1][1] = "Test Setup 3T"
-Autoskill_List[1][2] = "c4,#,g4,#,i25"
+Enable_Autoskill_List = 0
 
--- Arash charge + NP
--- Gil 1,2,3rd skill + Merlin 1st Skill + Gil NP
--- Waver 1,2,3 skills + Suit swap waver for friend waver + Waver 1,2,3 skill, suit buff, Gil NP
-Autoskill_List[2][1] = "Nerofest Qualifiers ArashGilWaverMerlinDudFriendWaver"
-Autoskill_List[2][2] = "fcd4,#,ehi5,#,bag2x32g2hic2j5"
+Autoskill_List[1][1] = "Settings No.1"
+Autoskill_List[1][2] = "abc,#,def,#,ghi"
 
--- abc def ghi
--- Arash 3 NP
--- Spartacus 2 3 Waver 1 on Spartacus Waver 2 3 Swap Waver 2 3 Gil 1 Spartacus NP
--- Gil 3 Waver 1 on Gil Gil NP
-Autoskill_List[3][1] = "Nerofest Arash, Gil, Waver, Spartacus, , fWaver"
-Autoskill_List[3][2] = "c4,#,bcg1hix32hid4,#,fg25"
+Autoskill_List[2][1] = "Settings No.2"
+Autoskill_List[2][2] = ""
+
+Autoskill_List[3][1] = "Settings No.3"
+Autoskill_List[3][2] = ""
 
 Autoskill_List[4][1] = "Settings No.4"
 Autoskill_List[4][2] = ""
