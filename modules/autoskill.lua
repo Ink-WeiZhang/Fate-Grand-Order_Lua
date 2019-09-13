@@ -29,11 +29,11 @@ end
 
 local function CastSkill(location)
 	return function()
+		wait(1)
 		click(location)
 		if Skill_Confirmation == 1 then
 			click(game.BATTLE_SKILL_OK_CLICK)
 		end
-
 		WaitForAnimationToFinish()
 	end
 end
