@@ -32,8 +32,8 @@ Support_MaxUpdates = 3
 Support_FallbackTo = "first"
 Support_FriendsOnly = 0
 Support_FriendNames = ""
-Support_PreferredServants = ""
-Support_PreferredCEs = "*mona_lisa.png"
+Support_PreferredServants = "waver4.png, waver3.png, waver2.png, waver1.png"
+Support_PreferredCEs = "*cheer_for_master.png, cheer_for_master.png"
 
 --Bond CE Get
 StopAfterBond10 = 0--[[
@@ -56,18 +56,26 @@ StorySkip = 0 --[[
 --AutoSkill
 Enable_Autoskill = 1
 Skill_Confirmation = 0
-Skill_Command = "abc,#,def,#,ghi"
+Skill_Command = ""
 
 --AutoSkillList
 Enable_Autoskill_List = 1
+-- Arash 3rd Skill + NP, Merlin 1st Skill + 1st Servant NP, Merlin 3rd skill on 2nd Servant + 2nd Servant NP
+Autoskill_List[1][1] = "Test Setup 3T"
+Autoskill_List[1][2] = "c4,#,g4,#,i25"
 
-Autoskill_List[1][1] = "3scope Merlin"
-Autoskill_List[1][2] = "g4,#,x11b4,#,5"
-Autoskill_List[2][1] = "Settings No.2"
-Autoskill_List[2][2] = ""
+-- Arash charge + NP
+-- Gil 1,2,3rd skill + Merlin 1st Skill + Gil NP
+-- Waver 1,2,3 skills + Suit swap waver for friend waver + Waver 1,2,3 skill, suit buff, Gil NP
+Autoskill_List[2][1] = "Nerofest Qualifiers ArashGilWaverMerlinDudFriendWaver"
+Autoskill_List[2][2] = "fcd4,#,ehi5,#,bag2x32g2hic2j5"
 
-Autoskill_List[3][1] = "Settings No.3"
-Autoskill_List[3][2] = ""
+-- abc def ghi
+-- Arash 3 NP
+-- Spartacus 2 3 Waver 1 on Spartacus Waver 2 3 Swap Waver 2 3 Gil 1 Spartacus NP
+-- Gil 3 Waver 1 on Gil Gil NP
+Autoskill_List[3][1] = "Nerofest Arash, Gil, Waver, Spartacus, , fWaver"
+Autoskill_List[3][2] = "c4,#,bcg1hix32hid4,#,fg25"
 
 Autoskill_List[4][1] = "Settings No.4"
 Autoskill_List[4][2] = ""
