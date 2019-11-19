@@ -33,7 +33,7 @@ Support_FallbackTo = "first"
 Support_FriendsOnly = 0
 Support_FriendNames = ""
 Support_PreferredServants = ""
-Support_PreferredCEs = "*mona_lisa.png"
+Support_PreferredCEs = "*holy_night_supper.png,holy_night_supper.png"
 
 --Bond CE Get
 StopAfterBond10 = 0--[[
@@ -67,7 +67,7 @@ Autoskill_List[2][1] = "Settings No.2"
 Autoskill_List[2][2] = ""
 
 Autoskill_List[3][1] = "Settings No.3"
-Autoskill_List[3][2] = ""
+Autoskill_List[3][2] = "c4,#,efgk25,#,bci14"
 
 Autoskill_List[4][1] = "Settings No.4"
 Autoskill_List[4][2] = ""
