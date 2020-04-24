@@ -35,11 +35,13 @@ init = function()
 	local function split(str)
 		local values = {}
 
-		for value in str:gmatch("[^,]+") do
-			value = stringUtils.Trim(value)
+		if str ~= nil then
+			for value in str:gmatch("[^,]+") do
+				value = stringUtils.Trim(value)
 
-			if value:lower() ~= "any" then
-				table.insert(values, value)
+				if value:lower() ~= "any" then
+					table.insert(values, value)
+				end
 			end
 		end
 
@@ -95,6 +97,7 @@ selectSupport = function(selectionMode)
 end
 
 selectFirst = function()
+	wait(1)
 	click(game.SUPPORT_FIRST_SUPPORT_CLICK)
 	--https://github.com/29988122/Fate-Grand-Order_Lua/issues/192 , band-aid fix but it's working well. 
 	if game.SUPPORT_SCREEN_REGION:exists(GeneralImagePath .. "support_screen.png") then
@@ -149,6 +152,9 @@ selectPreferred = function(searchMethod)
 			click(game.SUPPORT_UPDATE_CLICK)
 			wait(1)
 			click(game.SUPPORT_UPDATE_YES_CLICK)
+			while game.NeedsToRetry() do
+				game.Retry()
+			end
 			wait(3)
 
 			numberOfUpdates = numberOfUpdates + 1
@@ -237,7 +243,7 @@ searchMethod = {
 			local craftEssence = findCraftEssence(supportBounds)
 
 			-- CEs are always below Servants in the support list
-			-- see docs/support_list_edge_case_fix.png to understand why this conditional exists
+			-- see docs/media/support_list_edge_case_fix.png to understand why this conditional exists
 			if craftEssence ~= nil and craftEssence:getY() > servant:getY() then
 				return craftEssence, supportBounds -- only return if found. if not, try the other servants before scrolling
 			end
@@ -284,15 +290,20 @@ findCraftEssence = function(searchRegion)
 end
 
 findSupportBounds = function(support)
-	for _, supportBounds in ipairs(game.SUPPORT_LIST_ITEM_REGION_ARRAY) do
-		if ankuluaUtils.DoesRegionContain(supportBounds, support) then
-			return supportBounds
+	local supportBound = Region(76,0,2356,428)
+	local regionAnchor = Pattern(GeneralImagePath .. "support_region_tool.png")
+	local regionArray = regionFindAllNoFindException( Region(2100,0,300,1440), regionAnchor)
+	local defaultRegion = supportBound
+
+	for _, testRegion in ipairs(regionArray) do
+		supportBound:setY(testRegion:getY() - 70)
+		if ankuluaUtils.DoesRegionContain(supportBound, support) then
+			return supportBound
 		end
 	end
 
-	-- we're not supposed to end down here, but if we do, there's probably something wrong with SUPPORT_LIST_ITEM_REGION_ARRAY or SUPPORT_LIST_REGION
-	local message = "The Servant or Craft Essence (X: %i, Y: %i, Width: %i, Height: %i) is not contained in SUPPORT_LIST_ITEM_REGION_ARRAY."
-	error(message:format(support:getX(), support:getY(), support:getW(), support:getH()))
+	--toast( "Default Region being returned; file an issue on the github for this issue" )
+	return defaultRegion
 end
 
 isFriend = function(region)

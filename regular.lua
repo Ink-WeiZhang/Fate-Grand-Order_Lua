@@ -23,10 +23,11 @@ local autoskill = require("autoskill")
 -- fields
 local StoneUsed = 0
 local IsContinuing = 0
+local MatchClick = nil
 
 -- functions
 
---Refill stamina based on selected option within FGO_XX_REGULAR.lua
+--Refill stamina based on selected option within FGO_REGULAR.lua
 local function RefillStamina()
 	if Refill_Enabled == 1 and StoneUsed < Refill_Repetitions then
 		if Refill_Resource == "SQ" then
@@ -63,30 +64,42 @@ local function RefillStamina()
 	end
 end
 
+local function NeedsToWithdraw()
+	MatchClick = game.WITHDRAW_REGION:exists(GeneralImagePath .. "withdraw.png")	-- MatchClick used to click on the found image
+	return MatchClick
+end
+
+local function Withdraw()
+	if Withdraw_Enabled then
+		click(MatchClick)
+		MatchClick = nil		-- Return MatchClick to default state, to avoid any false positive clicking
+		wait(.5)
+		click(game.WITHDRAW_ACCEPT_CLICK)	-- Click the "Accept" button after choosing to withdraw
+		wait(1)
+		click(game.STAMINA_BRONZE_CLICK)	-- Click the "Close" button after accepting the withdrawal
+	else
+		scriptExit("All servants have been defeated and auto-withdrawing is disabled.")
+	end
+end
+
 --Click begin quest in Formation selection, then select boost item, if applicable, then confirm selection.
 local function StartQuest()
 	click(game.MENU_START_QUEST_CLICK)
 
-	-- old scripts might not have this option set
-	-- don't wanna force everyone to update their configs
-	if BoostItem_SelectionMode ~= nil then	
-		if game.MENU_BOOST_ITEM_CLICK_ARRAY[BoostItem_SelectionMode] ~= nil then
-			wait(2)
-			click(game.MENU_BOOST_ITEM_CLICK_ARRAY[BoostItem_SelectionMode])
-			click(game.MENU_BOOST_ITEM_SKIP_CLICK) -- in case you run out of items
-		else
-			scriptExit("Invalid boost item selection mode: \"" + BoostItem_SelectionMode + "\".")
-		end
+	if game.MENU_BOOST_ITEM_CLICK_ARRAY[BoostItem_SelectionMode] ~= nil then
+		wait(2)
+		click(game.MENU_BOOST_ITEM_CLICK_ARRAY[BoostItem_SelectionMode])
+		click(game.MENU_BOOST_ITEM_SKIP_CLICK) -- in case you run out of items
+	else
+		scriptExit("Invalid boost item selection mode: \"" + BoostItem_SelectionMode + "\".")
 	end
-
-	if StorySkip ~= nil then
-		if StorySkip == 1 then
-			wait(10)
-			if game.MENU_STORY_SKIP_REGION:exists(GeneralImagePath .. "storyskip.png") then
-				click(game.MENU_STORY_SKIP_CLICK)
-				wait(0.5)
-				click(game.MENU_STORY_SKIP_YES_CLICK)
-			end
+	
+	if StorySkip == 1 then
+		wait(10)
+		if game.MENU_STORY_SKIP_REGION:exists(GeneralImagePath .. "storyskip.png") then
+			click(game.MENU_STORY_SKIP_CLICK)
+			wait(0.5)
+			click(game.MENU_STORY_SKIP_YES_CLICK)
 		end
 	end
 end
@@ -100,6 +113,8 @@ end
 local function Menu()
 	battle.resetState()
 	turnCounter = {0, 0, 0, 0, 0}
+	-- Prints a message containing the amount of apple used
+	toast(StoneUsed .. " refills used out of " .. Refill_Repetitions)
 
 	--Click uppermost quest.
 	click(game.MENU_SELECT_QUEST_CLICK)
@@ -119,15 +134,13 @@ end
 --Click through reward screen, continue if option presents itself, otherwise continue clicking through
 local function Result()
 	--Validator document https://github.com/29988122/Fate-Grand-Order_Lua/wiki/In-Game-Result-Screen-Flow for detail.
-	continueClick(game.RESULT_NEXT_CLICK,35)
+	continueClick(game.RESULT_NEXT_CLICK,55)
 
 	--Checking if there was a Bond CE reward
 	if game.RESULT_CE_REWARD_REGION:exists(GeneralImagePath .. "ce_reward.png") ~= nil then
 		
-		if StopAfterBond10 ~= nil then --Making sure they can still run it without updating FGO_XX_REGULAR files
-			if StopAfterBond10 == 1 then
-				scriptExit("Bond 10 CE GET!")
-			end
+		if StopAfterBond10 == 1 then
+			scriptExit("Bond 10 CE GET!")
 		end
 		
 		click(game.RESULT_CE_REWARD_CLOSE_CLICK)
@@ -163,13 +176,11 @@ local function Result()
 	end
 
 	--Post-battle story is sometimes there.
-	if StorySkip ~= nil then
-		if StorySkip == 1 then
-			if game.MENU_STORY_SKIP_REGION:exists(GeneralImagePath .. "storyskip.png") then
-				click(game.MENU_STORY_SKIP_CLICK)
-				wait(0.5)
-				click(game.MENU_STORY_SKIP_YES_CLICK)
-			end
+	if StorySkip == 1 then
+		if game.MENU_STORY_SKIP_REGION:exists(GeneralImagePath .. "storyskip.png") then
+			click(game.MENU_STORY_SKIP_CLICK)
+			wait(0.5)
+			click(game.MENU_STORY_SKIP_YES_CLICK)
 		end
 	end
 
@@ -186,13 +197,14 @@ local function Result()
 
 	--1st time quest reward screen, eg. Mana Prisms, Event CE, Materials, etc.
 	if game.RESULT_QUEST_REWARD_REGION:exists(GeneralImagePath .. "questreward.png") ~= nil then
+		wait(1)
 		click(game.RESULT_NEXT_CLICK)
 	end
 end
 
 --Checks if Support Selection menu is up
 local function IsInSupport()
-        return game.SUPPORT_SCREEN_REGION:exists(GeneralImagePath .. "support_screen.png")
+	return game.SUPPORT_SCREEN_REGION:exists(Pattern(GeneralImagePath .. "support_screen.png"):similar(.85))
 end
 
 --Selections Support option, code located in modules/support.lua
@@ -205,67 +217,8 @@ local function Support()
 			StartQuest()
 		elseif IsContinuing == nil then
 			StartQuest()
+			wait(25)	-- Wait timer til battle starts. Uses less battery to wait than to search for images for 25 seconds. Adjust according to device.
 		end
-	end
-end
-
---User option PSA dialogue. Also choosble list of perdefined skill.
-local function PSADialogue()
-	dialogInit()
-	--Auto Refill dialogue content generation.
-	if Refill_Enabled == 1 then
-		if Refill_Resource == "SQ" then
-			RefillType = "sq"
-		elseif Refill_Resource == "All Apples" then
-			RefillType = "all apples"
-		elseif Refill_Resource == "Gold" then
-			RefillType = "gold apples"
-		elseif Refill_Resource == "Silver" then
-			RefillType = "silver apples"
-		else
-			RefillType = "bronze apples"
-		end
-		addTextView("Auto Refill Enabled:")
-		newRow()
-		addTextView("You are going to use")
-		newRow()
-		addTextView(Refill_Repetitions .. " " .. RefillType .. ", ")
-		newRow()
-		addTextView("remember to check those values everytime you execute the script!")
-		addSeparator()
-	end
-
-	--Autoskill dialogue content generation.
-	if Enable_Autoskill == 1 then
-		addTextView("AutoSkill Enabled:")
-		newRow()
-		addTextView("Start the script from menu or Battle 1/3 to make it work properly.")
-		addSeparator()
-	end
-
-	--Autoskill list dialogue content generation.
-	if Enable_Autoskill_List == 1 then
-		addTextView("Please select your predefined Autoskill setting:")
-		newRow()
-		addRadioGroup("AutoskillListIndex", 1)
-		addRadioButton(Autoskill_List[1][1] .. ": " .. Autoskill_List[1][2], 1)
-		addRadioButton(Autoskill_List[2][1] .. ": " .. Autoskill_List[2][2], 2)
-		addRadioButton(Autoskill_List[3][1] .. ": " .. Autoskill_List[3][2], 3)
-		addRadioButton(Autoskill_List[4][1] .. ": " .. Autoskill_List[4][2], 4)
-		addRadioButton(Autoskill_List[5][1] .. ": " .. Autoskill_List[5][2], 5)
-		addRadioButton(Autoskill_List[6][1] .. ": " .. Autoskill_List[6][2], 6)
-		addRadioButton(Autoskill_List[7][1] .. ": " .. Autoskill_List[7][2], 7)
-		addRadioButton(Autoskill_List[8][1] .. ": " .. Autoskill_List[8][2], 8)
-		addRadioButton(Autoskill_List[9][1] .. ": " .. Autoskill_List[9][2], 9)
-		addRadioButton(Autoskill_List[10][1] .. ": " .. Autoskill_List[10][2], 10)
-	end
-
-	--Show the generated dialogue.
-	dialogShow("CAUTION")
-	
-	--Put user selection into list for later exception handling.
-	if Enable_Autoskill_List == 1 then
-		Skill_Command = Autoskill_List[AutoskillListIndex][2]
 	end
 end
 
@@ -277,8 +230,6 @@ local function Init()
 	--Set only ONCE for every separated script run.
 	scaling.ApplyAspectRatioFix(SCRIPT_WIDTH, SCRIPT_HEIGHT, IMAGE_WIDTH, IMAGE_HEIGHT)
 
-	PSADialogue()
-
 	autoskill.Init(battle, card)
 	battle.init(autoskill, card)
 	card.init(autoskill, battle)
@@ -289,20 +240,28 @@ end
 --[[
 	SCREENS represents list of Validators and Actors
 	When Validator returns true/1, perform the Actor
+	Code for Retry can be found on line 66 of this Script
 	Code for battle.performBattle can be found in modules/battle.lua
-	Code for Menu is on line 89 of this Script
-	Code for Result is on line 109 of this Script
-	Code for Support is on line 174 of this Script
+	Code for Menu is on line 108 of this Script
+	Code for Result is on line 128 of this Script
+	Code for Support is on line 208 of this Script
 ]]--
 local SCREENS = {
+	{ Validator = game.NeedsToRetry,  Actor = game.Retry },
 	{ Validator = battle.isIdle, Actor = battle.performBattle },
 	{ Validator = IsInMenu,      Actor = Menu },
-	{ Validator = IsInResult,    Actor = Result},
-    { Validator = IsInSupport,   Actor = Support}
+	{ Validator = IsInResult,    Actor = Result },
+	{ Validator = IsInSupport,   Actor = Support },
+	{ Validator = NeedsToWithdraw, Actor = Withdraw}
 }
 
 Init()
-
+while(Debug_Mode) do
+	game.MENU_SCREEN_REGION:highlight(5)
+	game.SUPPORT_SCREEN_REGION:highlight(5)
+	game.BATTLE_SCREEN_REGION:highlight(5)
+	game.RESULT_SCREEN_REGION:highlight(5)
+end
 --Loop through SCREENS until a Validator returns true/1
 while(true) do
 	local actor = ankuluaUtils.UseSameSnapIn(function()
