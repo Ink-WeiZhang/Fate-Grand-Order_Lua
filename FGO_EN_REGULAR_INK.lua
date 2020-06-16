@@ -1,102 +1,75 @@
---Internal settings - do not modify.
---***************************************************************************
-dir = scriptPath()
-setImagePath(dir)
+-- Can be EN, JP, CN or TW
 GameRegion = "EN"
-StageCountRegion = Region(1722,25,46,53)
-SupportSwipeEndClick  = Location(35,390)
 
---Initalize for user input listnames
-Autoskill_List = {}
-for i = 1, 10 do
-    Autoskill_List[i] = {}
-    for j = 1, 2 do
-        Autoskill_List[i][j] = 0
-    end
-end
---***************************************************************************
-
-
-
---Script Configuration, check instructions here: https://github.com/29988122/Fate-Grand-Order_Lua/wiki/Script-configuration-English
+--Script Configuration, check instructions in the README and wiki: https://github.com/29988122/Fate-Grand-Order_Lua/wiki/Script-configuration-English
 --***************************************************************************
 --AutoRefill Stamina
 Refill_Enabled = 1
 Refill_Resource = "All Apples"
-Refill_Repetitions = 10
+Refill_Repetitions = 5
 
---AutoSupportSelection
-Support_SelectionMode = "preferred"
+--AutoSupportSelection Defaults
+Support_SelectionMode = "prefered"
 Support_SwipesPerUpdate = 10
-Support_MaxUpdates = 3
+Support_MaxUpdates = 20
 Support_FallbackTo = "first"
 Support_FriendsOnly = 0
 Support_FriendNames = ""
-Support_PreferredServants = ""
-Support_PreferredCEs = "*holy_night_supper.png"
-
---Bond CE Get
-StopAfterBond10 = 0--[[
-	This option is switched to 1 if you want to stop the script after retreiving a Bond 10 CE card
-	TODO: move this explanation to documentation
---]]
-
---BoostItem
-BoostItem_SelectionMode = "disabled" --[[
-	possible values: disabled, 1, 2 or 3
-	if you want to use this, make sure "Confirm Use of Boost Item" is off
-	
-	TODO: move this explanation to the documentation
---]]
-
-StorySkip = 0 --[[
-	People really want this feature.
-]]
+Support_PreferredServants = "merlin4.png, merlin23.png, merlin1.png"
+Support_PreferredCEs = "*chaldea_lunchtime.png"
 
 --AutoSkill
 Enable_Autoskill = 1
 Skill_Confirmation = 0
-Skill_Command = "abc,#,def,#,ghi"
 
---AutoSkillList
-Enable_Autoskill_List = 1
-
-Autoskill_List[1][1] = "3scope Merlin"
-Autoskill_List[1][2] = "g4,#,x11b4,#,5"
-Autoskill_List[2][1] = "Settings No.2"
-Autoskill_List[2][2] = ""
-
-Autoskill_List[3][1] = "Settings No.3"
-Autoskill_List[3][2] = "c4,#,efgk25,#,bci14"
-
-Autoskill_List[4][1] = "Settings No.4"
-Autoskill_List[4][2] = "c4,#,cdfg4,#,i2j25"
-
-Autoskill_List[5][1] = "Settings No.5"
-Autoskill_List[5][2] = ""
-
-Autoskill_List[6][1] = "Settings No.6"
-Autoskill_List[6][2] = ""
-
-Autoskill_List[7][1] = "Settings No.7"
-Autoskill_List[7][2] = ""
-
-Autoskill_List[8][1] = "Settings No.8"
-Autoskill_List[8][2] = ""
-
-Autoskill_List[9][1] = "Settings No.9"
-Autoskill_List[9][2] = ""
-
-Autoskill_List[10][1] = "Settings No.10"
-Autoskill_List[10][2] = ""
+Autoskill_List =
+{
+	{
+		Name = "QP",
+		Skill_Command = "4,#,f5,#,i6",
+		Support_SelectionMode = "preferred",
+		Support_PreferredServants = "",
+		Support_PreferredCEs = "*mona_lisa.png"
+	},
+	{
+		Name = "Dust",
+		Skill_Command = "cdg5,#,e5,#,abi1k14",
+		Support_SelectionMode = "preferred",
+		Support_PreferredServants = "merlin1.png, merlin23.png, merlin4.png, merlin_c.png"
+	},
+	{
+		Name = "Gear",
+		Skill_Command = "6,#,h6,#,bx31fed1gj46",
+		Support_SelectionMode = "preferred"
+	},
+	{
+		Name = "Kintoki goes boom",
+		Skill_Command = "abc3x11cba3df3ghj6,#,,#,",
+		Support_SelectionMode = "preferred",
+		Support_PreferredServants = "merlin1.png, merlin23.png, merlin4.png, merlin_c.png",
+		Support_PreferredCEs = "*an_afternoon_at_the_fortress.png, an_afternoon_at_the_fortress.png"
+	}
+}
 
 --Card Priority Customization
-Battle_CardPriority = "BAQ"
+Battle_CardPriority = "WB, WA, WQ, B, A, Q, RB, RA, WQ"
 --AutoChooseTarget
 Battle_AutoChooseTarget = 1
 --NoblePhantasm Casting
-Battle_NoblePhantasm = "disabled" 
+Battle_NoblePhantasm = "disabled"
+
+-- set to 'true' if needing to debug
+Debug_Mode = false
+-- stop the script after retreiving a Bond 10 CE card
+StopAfterBond10 = 0
+-- Boost item, possible values: disabled, 1, 2 or 3. Make sure "Confirm Use of Boost Item" is off
+BoostItem_SelectionMode = "disabled"
+StorySkip = 0
+--Auto Withdrawing
+Withdraw_Enabled = false
 --FastSkipDeadAnimation
 UnstableFastSkipDeadAnimation = 0
 
-dofile(dir .. "regular.lua")
+-- Do not modify below this line
+dir = scriptPath()
+dofile(dir .. "middleware.lua")
